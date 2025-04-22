@@ -1,10 +1,9 @@
-terraform {
-  required_version = ">= 1.1.0"
+terraform{
   backend "s3" {
-    bucket         = "techopsbucket123"
-    key            = "vpcec2/terraform.tfstateeks"
-    region         = "us-east-1"
+    bucket         = "terraform-state-backend-vamsee"
+    key            = "terraform/eksfargate"
+    region         = "us-west-1"
     encrypt        = true
-    dynamodb_table = "demo_table123"
+    ##dynamodb_table = "Dynamodb-lock"
   }
 }
