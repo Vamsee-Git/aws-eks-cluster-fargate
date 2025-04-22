@@ -24,3 +24,7 @@ output "kubernetes_version" {
   value = var.kubernetes_version
   description = "The Kubernetes version for the EKS cluster"
 }
+
+output "eks_fargate_pod_execution_role_arn" {
+  value = aws_iam_role.eks_fargate_pod_execution_role.arn
+}
