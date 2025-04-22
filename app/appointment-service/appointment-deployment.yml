@@ -18,7 +18,7 @@ spec:
         command: ['sh', '-c', 'echo init container initializing && sleep 5']
       containers:
       - name: appointment-app
-        image: 877786395093.dkr.ecr.ap-south-1.amazonaws.com/appointment-service:latest
+        image: 877786395093.dkr.ecr.us-west-2.amazonaws.com/appointment-service:latest
         ports:
         - containerPort: 3001
         resources:
