@@ -23,7 +23,7 @@ resource "kubernetes_config_map" "aws_auth" {
   data = {
     mapRoles = jsonencode([
       {
-        rolearn = module.eks_fargate.cluster_role_arn
+        rolearn = module.eks_fargate.eks_fargate_pod_execution_role_arn
         username = "system:node:{{EC2PrivateDNSName}}"
         groups = ["system:bootstrappers", "system:nodes"]
       }
