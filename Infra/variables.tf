@@ -52,8 +52,9 @@ variable "patient_service_image" {
   default     = "877786395093.dkr.ecr.ap-south-1.amazonaws.com/patient-service:latest"
 }
 
-variable "appointment_service_image" {
+variable "appointment_image" {
   description = "Docker image URL for the appointment service"
-  default     = "877786395093.dkr.ecr.ap-south-1.amazonaws.com/appointment-service:latest"
+  default     = "877786395093.dkr.ecr.us-east-2.amazonaws.com/appointment-service:latest"
 }
+
 
