@@ -1,0 +1,61 @@
+name: Image build
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  # Job : Deploy the application (Depends on 'create-infra' job)
+  deploy-app:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Configure AWS Credentials
+      - name: Set up AWS credentials with OIDC
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::877786395093:role/GitHubActionsRole
+          aws-region: us-east-1
+          
+      # Step 3: Create ECR Repository
+      - name: Create ECR
+        run: |
+          aws ecr create-repository --repository-name patient-service
+          aws ecr create-repository --repository-name appointment-service
+
+      # Step 4: Set up Docker Buildx for multi-platform builds
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Step 5: Log in to Amazon ECR
+      - name: Log in to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          region: us-east-1
+
+      # Step 6: Build patient-service Docker image
+      - name: Build patient-service Docker image
+        run: |
+          docker build -t 877786395093.dkr.ecr.us-east-1.amazonaws.com/patient-service:latest -f app/patient-service/Dockerfile app/patient-service
+
+      # Step 7: Build appointment-service Docker image
+      - name: Build appointment-service Docker image
+        run: |
+          docker build -t 877786395093.dkr.ecr.us-east-1.amazonaws.com/appointment-service:latest -f app/appointment-service/Dockerfile app/appointment-service
+
+      # Step 8: Push patient-service Docker image to ECR
+      - name: Push patient-service Docker image to ECR
+        run: |
+          docker push 877786395093.dkr.ecr.us-east-1.amazonaws.com/patient-service:latest
+
+      # Step 9: Push appointment-service Docker image to ECR
+      - name: Push appointment-service Docker image to ECR
+        run: |
+          docker push 877786395093.dkr.ecr.us-east-1.amazonaws.com/appointment-service:latest
