@@ -227,7 +227,55 @@ resource "aws_iam_policy" "eks_k8s_access" {
     ]
   })
 }
- 
+resource "kubernetes_deployment" "Appointmentdeployment" {
+  metadata {
+    name      = "appointment-deployment"
+    namespace = "default"
+  }
+  spec {
+    replicas = 1
+    selector {
+      match_labels = {
+        app = "appointment-deployment"  # Ensure this matches the service selectors
+      }
+    }
+    template {
+      metadata {
+        labels = {
+          app = "appointment-deployment"
+        }
+      }
+      spec {
+        container {
+          name  = "appointment-container"
+          image = var.appointment_image
+          port {
+            container_port = 3001
+          }
+        }
+      }
+    }
+  }
+}
+
+resource "kubernetes_service" "AppointmentService" {
+  metadata {
+    name      = "appointment-service"
+    namespace = "default"
+  }
+  spec {
+    selector = {
+      app = "appointment-deployment"  # Update to match the deployment label
+    }
+    port {
+      protocol   = "TCP"
+      port       =  3001
+      target_port = 3001
+    }
+    type = "LoadBalancer"
+  }
+}
+
 resource "aws_iam_user_policy_attachment" "attach_k8s_access_policy" {
   user       = "vamsee.techops"
   policy_arn = aws_iam_policy.eks_k8s_access.arn
