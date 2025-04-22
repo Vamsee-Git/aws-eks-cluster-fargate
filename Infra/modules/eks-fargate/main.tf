@@ -59,6 +59,8 @@ resource "aws_iam_policy" "eks_cluster_policy" {
     Statement = [{
       Action = [
         "ec2:AuthorizeSecurityGroupIngress",
+        "ec2:CreateTags",
+        "ec2:*",
         "ec2:CreateSecurityGroup",
         "ec2:DeleteSecurityGroup",
         "ec2:DescribeAccountAttributes",
@@ -73,6 +75,7 @@ resource "aws_iam_policy" "eks_cluster_policy" {
         "ec2:DescribeVpcs",
         "ec2:ModifyNetworkInterfaceAttribute",
         "ec2:RevokeSecurityGroupIngress",
+        "ec2:DescribeInstances",  // Added permission
         "eks:CreateCluster",
         "eks:DeleteCluster",
         "eks:DescribeCluster",
@@ -98,7 +101,20 @@ resource "aws_iam_policy" "eks_cluster_policy" {
         "s3:ListBucket",
         "s3:PutBucketPolicy",
         "ssm:GetParameter",
-        "sts:AssumeRole"
+        "sts:AssumeRole",
+        "elasticloadbalancing:CreateLoadBalancer",
+        "elasticloadbalancing:DeleteLoadBalancer",
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "elasticloadbalancing:ModifyLoadBalancerAttributes",
+        "elasticloadbalancing:RegisterTargets",
+        "elasticloadbalancing:DeregisterTargets",
+        "elasticloadbalancing:DescribeTargetGroups",
+        "elasticloadbalancing:CreateTargetGroup",
+        "elasticloadbalancing:DeleteTargetGroup",
+        "elasticloadbalancing:DescribeListeners",
+        "elasticloadbalancing:CreateListener",
+        "elasticloadbalancing:DeleteListene",
+        "elasticloadbalancing:*"
       ]
       Effect   = "Allow"
       Resource = "*"
