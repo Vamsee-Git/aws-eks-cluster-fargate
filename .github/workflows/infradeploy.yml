@@ -1,0 +1,54 @@
+name: Terraform Infra
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Action to perform (apply or destroy)'
+        required: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up AWS credentials with OIDC
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::877786395093:role/github-oidc-vamsee
+          aws-region: us-west-2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./Infra
+
+      - name: Terraform fmt
+        run: terraform fmt
+        working-directory: ./Infra
+        
+      - name: Terraform validate
+        run: terraform validate
+        working-directory: ./Infra
+        
+      - name: Terraform plan
+        run: terraform plan -var-file="../environments/dev/terraform.tfvars"
+        working-directory: ./Infra
+
+      - name: Terraform Apply or Destroy
+        run: |
+              if [ "${{ github.event.inputs.action }}" == "apply" ]; then
+                terraform apply -var-file="../environments/dev/terraform.tfvars" -auto-approve
+              elif [ "${{ github.event.inputs.action }}" == "destroy" ]; then
+                terraform destroy -var-file="../environments/dev/terraform.tfvars" -auto-approve
+              fi
+        working-directory: ./Infra
