@@ -68,8 +68,8 @@ module "eks_fargate" {
 }
 
 
-module "ecr" {
+/*module "ecr" {
   source                       = "./modules/ecr"
   patient_service_repo_name    = "patient-service"
   appointment_service_repo_name = "appointment-service"
-}
+}*/
