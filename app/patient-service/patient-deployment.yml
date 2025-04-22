@@ -18,7 +18,7 @@ spec:
         command: ['sh', '-c', 'echo init container initializing && sleep 5']
       containers:
       - name: patient-app
-        image: 877786395093.dkr.ecr.ap-south-1.amazonaws.com/patient-service:latest
+        image: 877786395093.dkr.ecr.us-west-2.amazonaws.com/patient-service:latest
         ports:
         - containerPort: 3000
         resources:
