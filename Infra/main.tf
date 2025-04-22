@@ -11,6 +11,24 @@ resource "aws_security_group" "eks_cluster_sg" {
     description = "Allow worker nodes inbound to control plane"
   }
 
+  ingress {
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow traffic to application"
+  }
+
+  ingress {
+    from_port   = 3001
+    to_port     = 3001
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow traffic to application"
+  }
+
+  
+
   # Allow control plane outbound to worker nodes (Fargate pods)
   egress {
     from_port   = 1025
