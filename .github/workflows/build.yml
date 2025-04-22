@@ -21,8 +21,8 @@ jobs:
       - name: Set up AWS credentials with OIDC
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: arn:aws:iam::877786395093:role/GitHubActionsRole
-          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::877786395093:role/github-oidc-vamsee
+          aws-region: us-west-2
           
       # Step 3: Create ECR Repository
       - name: Create ECR
@@ -43,19 +43,19 @@ jobs:
       # Step 6: Build patient-service Docker image
       - name: Build patient-service Docker image
         run: |
-          docker build -t 877786395093.dkr.ecr.us-east-1.amazonaws.com/patient-service:latest -f app/patient-service/Dockerfile app/patient-service
+          docker build -t 877786395093.dkr.ecr.us-west-2.amazonaws.com/patient-service:latest -f app/patient-service/Dockerfile app/patient-service
 
       # Step 7: Build appointment-service Docker image
       - name: Build appointment-service Docker image
         run: |
-          docker build -t 877786395093.dkr.ecr.us-east-1.amazonaws.com/appointment-service:latest -f app/appointment-service/Dockerfile app/appointment-service
+          docker build -t 877786395093.dkr.ecr.us-west-2.amazonaws.com/appointment-service:latest -f app/appointment-service/Dockerfile app/appointment-service
 
       # Step 8: Push patient-service Docker image to ECR
       - name: Push patient-service Docker image to ECR
         run: |
-          docker push 877786395093.dkr.ecr.us-east-1.amazonaws.com/patient-service:latest
+          docker push 877786395093.dkr.ecr.us-west-2.amazonaws.com/patient-service:latest
 
       # Step 9: Push appointment-service Docker image to ECR
       - name: Push appointment-service Docker image to ECR
         run: |
-          docker push 877786395093.dkr.ecr.us-east-1.amazonaws.com/appointment-service:latest
+          docker push 877786395093.dkr.ecr.us-west-2.amazonaws.com/appointment-service:latest
