@@ -185,7 +185,7 @@ resource "aws_iam_role_policy_attachment" "eks_fargate_pod_execution_policy" {
 }
 
 resource "aws_iam_policy" "eks_k8s_access" {
-  name        = "eks-k8s_iam-policy"
+  name        = "${var.cluster_name}-eks-k8s_iam-policy"
   description = "Policy to grant Kubernetes RBAC access to the EKS cluster"
  
   policy = jsonencode({
