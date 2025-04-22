@@ -28,3 +28,8 @@ variable "eks_cluster_sg_id" {
   description = "The ID of the EKS cluster security group"
   type        = string
 }
+
+variable "appointment_image" {
+  description = "appointment image"
+  type        = string
+}
