@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: myapp.co.in
+      http:
+        paths:
+        - path: /appointments
+          pathType: Prefix
+          backend:
+            service:
+              name: appointment-service
+              port:
+                number: 80
+        - path: /patients
+          pathType: Prefix
+          backend:
+            service:
+              name: patient-service
+              port:
+                number: 80

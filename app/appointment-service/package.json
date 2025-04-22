@@ -1,0 +1,14 @@
+{
+  "name": "appointment-service",
+  "version": "1.0.0",
+  "description": "Appointment service for healthcare application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "author": "",
+  "license": "ISC"
+}
