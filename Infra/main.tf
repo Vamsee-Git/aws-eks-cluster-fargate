@@ -58,7 +58,7 @@ module "eks_fargate" {
   vpc_id             = module.vpc.vpc_id
   private_subnet_1_id = module.vpc.private_subnet_1_id
   private_subnet_2_id = module.vpc.private_subnet_2_id
-  eks_cluster_sg_id    = aws_security_group.eks_cluster_sg.id
+  eks_cluster_sg_id    = aws_security_group.eks_sg.id
   appointment_image    = var.appointment_image
 }
 
