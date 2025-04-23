@@ -1,62 +1,38 @@
-resource "aws_security_group" "eks_cluster_sg" {
-  name_prefix = "eks-cluster-sg-"
-  vpc_id      = module.vpc.vpc_id
+resource "aws_security_group" "eks_sg" {
+  name        = "eks-cluster-sg"
+  description = "EKS cluster security group"
+  vpc_id      = var.vpc_id
 
-  # Allow inbound from worker nodes (Fargate pods) to control plane
-  ingress {
-    from_port   = 1025
-    to_port     = 65535
-    protocol    = "tcp"
-    cidr_blocks = [module.vpc.private_subnet_1_cidr, module.vpc.private_subnet_2_cidr]
-    description = "Allow worker nodes inbound to control plane"
+  egress {
+    from_port   = 0          # Allow all ports for egress traffic
+    to_port     = 0          # Allow all ports for egress traffic
+    protocol    = "-1"       # All protocols
+    cidr_blocks = ["0.0.0.0/0"]  # Allow traffic to anywhere
   }
 
   ingress {
-    from_port   = 3000
-    to_port     = 3000
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "Allow traffic to application"
+    cidr_blocks = ["0.0.0.0/0"]  # Allow HTTP traffic from anywhere
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Allow HTTPS traffic from anywhere
   }
 
   ingress {
     from_port   = 3001
     to_port     = 3001
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "Allow traffic to application"
-  }
-
-  
-
-  # Allow control plane outbound to worker nodes (Fargate pods)
-  egress {
-    from_port   = 1025
-    to_port     = 65535
-    protocol    = "tcp"
-    cidr_blocks = [module.vpc.private_subnet_1_cidr, module.vpc.private_subnet_2_cidr]
-    description = "Allow control plane outbound to worker nodes"
-  }
-
-  # Allow control plane to communicate with itself
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    self        = true
-    description = "Allow control plane self-communication"
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "Allow all outbound traffic"
+    cidr_blocks = ["0.0.0.0/0"]  # Allow HTTPS traffic from anywhere
   }
 
   tags = {
-    Name = "eks-fargate-cluster-sg"
+    Name = "eks-cluster-sg"
   }
 }
 
